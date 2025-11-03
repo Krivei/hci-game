@@ -1,0 +1,13 @@
+{
+    "h1.pickTheLighterColour": "Finde die hellere Farbe!",
+    "button.tapToStart": "Los geht's!",
+    "label.getReady": "Bereit machen...",
+    "label.gameOver": "Game Over!",
+    "label.finalScore": "Endstand",
+    "label.avgTime": "Ø Zeit",
+    "label.round": "Runde",
+    "label.score": "Punkte",
+    "label.rounds": "Runden",
+    "label.luminanceGap": "Helligkeitsunterschied (Dev)",
+    "button.tapToPlayAgain": "Nochmal spielen"
+}
