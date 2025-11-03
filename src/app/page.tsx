@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useTransition } from "react";
+import { useTranslation } from 'react-i18next';
+import i18next from "./i18n/client"
 
 const MAX_ROUNDS = 20;
 
@@ -188,6 +190,16 @@ function generateOptions(count: number, step: number): RoundData {
   return { options, correctIndex, lumGap: Math.abs(correctLum - secondLum), hue, sat };
 }
 
+const LanguageSwitcher: React.FC = () => {
+  return (
+    <div className="ls-container">
+      <div className={`ls-lb${i18next.language === "en" ? " active" : ""}`} onClick={() => i18next.changeLanguage("en")}>EN</div>
+      <div className={`ls-lb${i18next.language === "de" ? " active" : ""}`} onClick={() => i18next.changeLanguage("de")}>DE</div>
+      <div className={`ls-lb${i18next.language === "cn" ? " active" : ""}`} onClick={() => i18next.changeLanguage("cn")}>中文</div>
+    </div>
+  );
+};
+
 export default function Page() {
   // game states: idle (tap to start), countdown, playing, gameover
   const [state, setState] = useState<"idle" | "countdown" | "playing" | "gameover">("idle");
@@ -207,6 +219,7 @@ export default function Page() {
   // Session/timing state for export
   const [sessionStart, setSessionStart] = useState<number | null>(null);
   const [sessionEnd, setSessionEnd] = useState<number | null>(null);
+
   // Logging: store per-round results (still kept for debugging) but not required for export
   type LogEntry = {
     round: number;
@@ -220,6 +233,9 @@ export default function Page() {
     optionLightnesses: number[];
   };
   const [log, setLog] = useState<LogEntry[]>([]);
+
+  // translation
+  const { t } = useTranslation()
 
   // difficulty progression params
   const maxOptions = 5;
@@ -394,47 +410,45 @@ export default function Page() {
 
   return (
     <main style={{ padding: 20, fontFamily: "system-ui, sans-serif", maxWidth: 520, margin: "0 auto" }}>
-      <h1 style={{ marginBottom: 6 }}>Pick the lighter color</h1>
+      <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <h1>{t("h1.pickTheLighterColour")}</h1>
+          <div>
+            <LanguageSwitcher />
+          </div>
+        </div>
 
       {state === "idle" && (
         <div style={{ textAlign: "center", marginTop: 40 }}>
           <button
             onClick={handleTapToStart}
             style={{ fontSize: 20, padding: "14px 24px", borderRadius: 12, cursor: "pointer" }}>
-            Tap to start
+            {t("button.tapToStart")}
           </button>
-          <p style={{ color: "#666", marginTop: 12 }}>Tap to start (starts instantly).</p>
         </div>
       )}
 
       {state === "countdown" && (
         <div style={{ textAlign: "center", marginTop: 40 }}>
           <div style={{ fontSize: 48, fontWeight: 700 }}>{countdown}</div>
-          <div style={{ color: "#666", marginTop: 8 }}>Get ready...</div>
+          <div style={{ color: "#666", marginTop: 8 }}>{t("label.getReady")}</div>
         </div>
       )}
 
       {state === "gameover" && (
         <div style={{ textAlign: "center", marginTop: 40 }}>
-          <div style={{ fontSize: 28, fontWeight: 700 }}>Game over</div>
+          <div style={{ fontSize: 28, fontWeight: 700 }}>{t("label.gameOver")}</div>
           <div style={{ color: "#333", marginTop: 8, fontSize: 16 }}>
-            Rounds completed: <strong>{roundsCompleted}</strong> with score <strong>{score}</strong>
+            {t("label.finalScore")}: {score}
           </div>
-          <div style={{ color: "#666", marginTop: 6 }}>Avg time: {averageMs ? `${(averageMs / 1000).toFixed(2)}s` : "—"}</div>
+          <div style={{ color: "#666", marginTop: 6 }}>
+            {t("label.avgTime")}: {averageMs ? `${(averageMs / 1000).toFixed(2)}s` : "—"}
+          </div>
           <button
             onClick={() => handleTapToStart()}
             style={{ marginTop: 14, fontSize: 16, padding: "10px 18px", borderRadius: 10, cursor: "pointer" }}>
-            Play again
+            {t("button.tapToPlayAgain")}
           </button>
-          {/* <div>
-          {
-            roundTime.map((t, i) => (
-              <div key={i} style={{ fontSize: 12, color: "#666", marginTop: 4 }}>
-                Round {i + 1}: {(t / 1000).toFixed(2)}s
-              </div>
-            ))
-          }
-          </div> */}
         </div>
       )}
 
@@ -442,11 +456,11 @@ export default function Page() {
         <section>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 12 }}>
             <div>
-              <strong>Round:</strong> {round}
+              <strong>{t("label.round")}: {round} / {MAX_ROUNDS}</strong>
             </div>
             <div style={{ textAlign: "right", color: "#666", fontSize: 13 }}>
-              Avg time: {averageMs ? `${(averageMs / 1000).toFixed(2)}s` : "—"}
-              <div style={{ fontSize: 11 }}>Rounds completed: {roundsCompleted}/{MAX_ROUNDS}, score {score}</div>
+              {t("label.avgTime")}: {averageMs ? `${(averageMs / 1000).toFixed(2)}s` : "—"}
+              <div style={{ fontSize: 11 }}>{t("label.score")}: {score}</div>
             </div>
           </div>
 
@@ -470,10 +484,11 @@ export default function Page() {
 
           <div style={{ marginTop: 12 }}>
             {lastResult && <div style={{ marginBottom: 8 }}>{lastResult}</div>}
-            <div style={{ color: "#666", fontSize: 13 }}>Luminance gap (debug): {roundData.lumGap.toFixed(4)}</div>
+            <div style={{ color: "#666", fontSize: 13 }}>{t("label.luminanceGap")}: { roundData.lumGap.toFixed(4) }</div>
           </div>
         </section>
       )}
+      </div>
     </main>
   );
 }

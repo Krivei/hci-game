@@ -24,3 +24,22 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.ls-container {
+  display: flex;
+  gap: 8px;
+}
+
+.ls-lb {
+  background: none;
+  border: 1px solid var(--foreground);
+  color: var(--foreground);
+  padding: 4px 8px;
+  margin-right: 4px;
+  cursor: pointer;
+}
+
+.ls-lb.active {
+  background: var(--foreground);
+  color: var(--background);
+}
