@@ -1,0 +1,13 @@
+{
+    "h1.pickTheLighterColour": "Pick the lighter colour",
+    "button.tapToStart": "Tap to Start",
+    "label.getReady": "Get ready...",
+    "label.gameOver": "Game over",
+    "label.finalScore": "Final score",
+    "label.avgTime": "Avg time",
+    "label.round": "Round",
+    "label.score": "Score",
+    "label.rounds": "Rounds",
+    "label.luminanceGap": "Luminance gap (debug)",
+    "button.tapToPlayAgain": "Tap to Play Again"
+}

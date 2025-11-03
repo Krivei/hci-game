@@ -1,0 +1,13 @@
+{
+    "h1.pickTheLighterColour": "快找出更亮的颜色！",
+    "button.tapToStart": "开战！",
+    "label.getReady": "抓紧准备…",
+    "label.gameOver": "游戏结束！",
+    "label.finalScore": "最终得分",
+    "label.avgTime": "平均用时",
+    "label.round": "第几回合",
+    "label.score": "得分",
+    "label.rounds": "总回合数",
+    "label.luminanceGap": "亮度差（Dev）",
+    "button.tapToPlayAgain": "再来一次！"
+}
